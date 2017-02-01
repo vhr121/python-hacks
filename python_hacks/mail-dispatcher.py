@@ -89,20 +89,24 @@ msg.attach(MIMEText(body, 'plain'))
  
 
 
- 
-server = smtplib.SMTP('smtp.gmail.com', 587)
-server.starttls()
-server.login(fromaddr, password)
-text = msg.as_string()
+try: 
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(fromaddr, password)
+    text = msg.as_string()
 
-if(multiple=='no'):
-    msg['To'] = toaddr
-    server.sendmail(fromaddr, toaddr, text)
-    
-else:
-    for toaddr in flattened:
+    if(multiple=='no'):
         msg['To'] = toaddr
         server.sendmail(fromaddr, toaddr, text)
         
-server.quit()
-print("the message has been sent successfully")
+    else:
+        for toaddr in flattened:
+            msg['To'] = toaddr
+            server.sendmail(fromaddr, toaddr, text)
+    server.quit()
+    print("the message has been sent successfully")
+except:
+    print("please enter the mail or password correctly/ make sure you have given permission to less secure apps in your gmail account and try again")
+        
+
+
